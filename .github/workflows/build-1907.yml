@@ -25,7 +25,7 @@ jobs:
       - name: Build image
         working-directory: ib
         run: |
-          make image PROFILE="tplink_tl-wr842n-v5" \
+          make image PROFILE="tplink_tl-wr842n-v5" FORCE=1 \
             PACKAGES="luci luci-ssl samba36-server luci-app-samba block-mount kmod-fs-vfat kmod-fs-f2fs kmod-fs-exfat relayd miniupnpd luci-app-upnp wifischedule luci-app-wifischedule kmod-usb-net-rndis kmod-usb-net-cdc-ether kmod-mtd-rw -ppp -ppp-mod-pppoe -ppp-mod-pppol2tp -odhcp6c -odhcpd-ipv6only -kmod-fs-hfs -kmod-fs-hfsplus -kmod-fs-ext4"
 
       - uses: actions/upload-artifact@v4
