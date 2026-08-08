@@ -12,6 +12,10 @@ jobs:
           sudo apt update
           sudo apt install -y build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3
 
+      - name: Install Python 2 compatibility
+        run: |
+          sudo apt install -y python2 || sudo ln -sf /usr/bin/python3 /usr/bin/python
+
       - name: Download ImageBuilder
         run: |
           wget https://downloads.openwrt.org/releases/19.07.10/targets/ramips/mt76x8/openwrt-imagebuilder-19.07.10-ramips-mt76x8.Linux-x86_64.tar.xz
@@ -24,8 +28,10 @@ jobs:
 
       - name: Build image
         working-directory: ib
+        env:
+          FORCE: "1"
         run: |
-          make image PROFILE="tplink_tl-wr842n-v5" FORCE=1 \
+          make image PROFILE="tplink_tl-wr842n-v5" \
             PACKAGES="luci luci-ssl samba36-server luci-app-samba block-mount kmod-fs-vfat kmod-fs-f2fs kmod-fs-exfat relayd miniupnpd luci-app-upnp wifischedule luci-app-wifischedule kmod-usb-net-rndis kmod-usb-net-cdc-ether kmod-mtd-rw -ppp -ppp-mod-pppoe -ppp-mod-pppol2tp -odhcp6c -odhcpd-ipv6only -kmod-fs-hfs -kmod-fs-hfsplus -kmod-fs-ext4"
 
       - uses: actions/upload-artifact@v4
