@@ -1,0 +1,40 @@
+name: Build MR3020 no-wifi Samba image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3
+
+      - name: Install Python 2 compatibility
+        run: |
+          sudo apt install -y python2 || sudo ln -sf /usr/bin/python3 /usr/bin/python
+
+      - name: Download ImageBuilder
+        run: |
+          wget https://downloads.openwrt.org/releases/19.07.10/targets/ath79/tiny/openwrt-imagebuilder-19.07.10-ath79-tiny.Linux-x86_64.tar.xz
+          tar xf openwrt-imagebuilder-19.07.10-ath79-tiny.Linux-x86_64.tar.xz
+          mv openwrt-imagebuilder-19.07.10-ath79-tiny.Linux-x86_64 ib
+
+      - name: Show profile name
+        working-directory: ib
+        run: make info | grep -i mr3020 || make info | head -60
+
+      - name: Build image
+        working-directory: ib
+        env:
+          FORCE: "1"
+        run: |
+          make image PROFILE="tplink_tl-mr3020-v1" \
+            PACKAGES="samba36-server block-mount kmod-fs-vfat kmod-fs-exfat kmod-usb-storage kmod-usb-storage-extras kmod-usb-chipidea2 -ppp -ppp-mod-pppoe -kmod-ppp -kmod-pppoe -chat -wpad-mini -kmod-ath9k -kmod-mac80211 -kmod-cfg80211 -wireless-regdb -hostapd-common -kmod-usb-ledtrig-usbport"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-mr3020-samba-nowifi
+          path: ib/bin/targets/ath79/tiny/*
