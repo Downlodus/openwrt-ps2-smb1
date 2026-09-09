@@ -18,7 +18,7 @@ jobs:
 
       - name: Download ImageBuilder
         run: |
-          wget https://downloads.openwrt.org/releases/18.06.9/targets/ar71xx/tiny/openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64.tar.xz
+          wget https://archive.openwrt.org/releases/18.06.9/targets/ar71xx/tiny/openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64.tar.xz
           tar xf openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64.tar.xz
           mv openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64 ib
 
