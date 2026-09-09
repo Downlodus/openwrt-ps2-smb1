@@ -22,6 +22,10 @@ jobs:
           tar xf openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64.tar.xz
           mv openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64 ib
 
+      - name: Show all profiles
+        working-directory: ib
+        run: (make info 2>&1 | grep -B2 -A5 -i "3020\|mr30") || true
+
       - name: Build image
         working-directory: ib
         env:
