@@ -24,7 +24,7 @@ jobs:
 
       - name: Show all profiles
         working-directory: ib
-        run: (make info 2>&1 | grep -A5 -i "mr3020\|tp-link") || true
+        run: (make info 2>&1 | grep -B2 -A5 -i "3020") || true
 
       - name: Build image
         working-directory: ib
