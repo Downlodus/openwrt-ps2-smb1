@@ -26,6 +26,12 @@ jobs:
           tar xf openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64.tar.xz
           mv openwrt-imagebuilder-18.06.9-ar71xx-tiny.Linux-x86_64 ib
 
+      - name: Bypass broken gcc version check
+        working-directory: ib
+        run: |
+          mkdir -p staging_dir/host
+          touch staging_dir/host/.prereq-build
+
       - name: Build image
         working-directory: ib
         run: |
