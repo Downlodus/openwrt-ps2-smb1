@@ -11,6 +11,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3
+          sudo ln -sf /usr/bin/gcc-11 /usr/bin/gcc || true
+          sudo ln -sf /usr/bin/g++-11 /usr/bin/g++ || true
+          gcc --version
+          g++ --version3
 
       - name: Install Python 2 compatibility
         run: |
