@@ -25,7 +25,7 @@ jobs:
       - name: Build image
         working-directory: ib
         run: |
-          make image PROFILE="DEVICE_tl-mr3020-v1" FORCE=1 \
+          FORCE=1 make image PROFILE="DEVICE_tl-mr3020-v1" \
             PACKAGES="samba36-server block-mount kmod-fs-vfat kmod-fs-exfat kmod-usb-storage kmod-usb-storage-extras -ppp -ppp-mod-pppoe -kmod-ppp -kmod-pppoe -chat -wpad-mini -kmod-ath9k -kmod-mac80211 -kmod-cfg80211 -wireless-regdb -hostapd-common"
       
       - uses: actions/upload-artifact@v4
