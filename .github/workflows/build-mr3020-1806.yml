@@ -14,7 +14,7 @@ jobs:
           sudo ln -sf /usr/bin/gcc-11 /usr/bin/gcc || true
           sudo ln -sf /usr/bin/g++-11 /usr/bin/g++ || true
           gcc --version
-          g++ --version3
+          g++ --version
 
       - name: Install Python 2 compatibility
         run: |
