@@ -1,0 +1,38 @@
+name: Build MR3020 LEDE 17.01.7
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3
+          sudo ln -sf /usr/bin/gcc-11 /usr/bin/gcc || true
+          sudo ln -sf /usr/bin/g++-11 /usr/bin/g++ || true
+
+      - name: Download ImageBuilder
+        run: |
+          wget https://archive.openwrt.org/releases/17.01.7/targets/ar71xx/generic/lede-imagebuilder-17.01.7-ar71xx-generic.Linux-x86_64.tar.xz
+          tar xf lede-imagebuilder-17.01.7-ar71xx-generic.Linux-x86_64.tar.xz
+          mv lede-imagebuilder-17.01.7-ar71xx-generic.Linux-x86_64 ib
+
+      - name: Bypass broken gcc version check
+        working-directory: ib
+        run: |
+          mkdir -p staging_dir/host
+          touch staging_dir/host/.prereq-build
+
+      - name: Build image
+        working-directory: ib
+        run: |
+          make image PROFILE="tl-mr3020-v1" \
+            PACKAGES="samba36-server block-mount kmod-fs-vfat kmod-fs-exfat kmod-usb-storage -ppp -ppp-mod-pppoe -kmod-ppp -kmod-pppoe -chat -wpad-mini -kmod-ath9k -kmod-mac80211 -kmod-cfg80211 -wireless-regdb -hostapd-common"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-mr3020-lede1701-samba
+          path: ib/bin/targets/ar71xx/generic/*
